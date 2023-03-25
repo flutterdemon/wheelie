@@ -114,7 +114,6 @@ class _PickUpScreenState extends State<PickUpScreen> {
                                         ))
                                     .toList(),
                                 onChanged: (value) {
-                                  print(value);
                                   setState(() {
                                     _selectedCity = value.toString();
                                     print(_selectedCity);
@@ -138,7 +137,6 @@ class _PickUpScreenState extends State<PickUpScreen> {
                         height: 50.0,
                         child: ElevatedButton(
                           onPressed: () {
-                            print(_selectedCity);
                             if (_formKey.currentState!.validate()) {
                               prefs.setString(
                                   'pick-up-date', _pickUpController.text);
@@ -146,8 +144,9 @@ class _PickUpScreenState extends State<PickUpScreen> {
                                   'drop-of-date', _dropOfController.text);
                               prefs.setString(
                                   'location', _selectedCity.toString());
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => HomeScreen()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (_) => HomeScreen()));
                             }
                           },
                           child: Text(

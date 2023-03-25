@@ -36,10 +36,7 @@ dependencies:
   loading_animations: ^2.2.0
   flutter_svg: ^1.1.6
   google_fonts: ^4.0.3
-  flutter_localizations:
-    sdk: flutter
   flutter_rounded_date_picker: ^3.0.2
-  localization: ^2.1.0
   intl: ^0.17.0
   shared_preferences: ^2.0.18
 
@@ -66,7 +63,10 @@ flutter:
   assets:
     - images/
     - images/onboard/
+    - images/menus/
     - images/icons/
+    - images/cars/
+    - images/car-brands/
     - google-fonts/
     - assets/
 
