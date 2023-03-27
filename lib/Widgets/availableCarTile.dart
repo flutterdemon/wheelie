@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wheelie/Widgets/sideDrawer.dart';
 
 class AvailableCarTile extends StatelessWidget {
   const AvailableCarTile(
@@ -59,19 +60,22 @@ class AvailableCarTile extends StatelessWidget {
                       Row(
                         children: [
                           Spacer(),
-                          Container(
-                            width: 120,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12.0),
-                                    bottomRight: Radius.circular(12.0)),
-                                color: Theme.of(context).primaryColor),
-                            child: Center(
-                              child: Text(
-                                price,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: 120,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12.0),
+                                      bottomRight: Radius.circular(12.0)),
+                                  color: Theme.of(context).primaryColor),
+                              child: Center(
+                                child: Text(
+                                  price,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
