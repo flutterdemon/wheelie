@@ -34,79 +34,79 @@ class _HomeScreenState extends State<HomeScreen> {
       "title": "Audi Q3",
       "image": "images/cars/audia1.png",
       "brand": "images/car-brands/audi.png",
-      "price": "Ksh2000/day"
+      "price": "Ksh2000"
     },
     {
       "title": "Audi Box",
       "image": "images/cars/audi-box.png",
       "brand": "images/car-brands/audi.png",
-      "price": "Ksh1800/day"
+      "price": "Ksh1800"
     },
     {
       "title": "Tesla",
       "image": "images/cars/carforbox.png",
       "brand": "images/car-brands/tesla.png",
-      "price": "Ksh2000/day"
+      "price": "Ksh2000"
     },
     {
       "title": "Benz",
       "image": "images/cars/benz.png",
       "brand": "images/car-brands/mercedes.png",
-      "price": "Ksh3000/day"
+      "price": "Ksh3000"
     },
     {
       "title": "Benz Box",
       "image": "images/cars/benz-box.png",
       "brand": "images/car-brands/mercedes.png",
-      "price": "Ksh3500/day"
+      "price": "Ksh3500"
     },
     {
       "title": "Toyota Box",
       "image": "images/cars/toyota-box.png",
       "brand": "images/car-brands/toyota.png",
-      "price": "Ksh1500/day"
+      "price": "Ksh1500"
     },
     {
       "title": "Toyota Camry",
       "image": "images/cars/toyotacamry.png",
       "brand": "images/car-brands/toyota.png",
-      "price": "Ksh1800/day"
+      "price": "Ksh1800"
     },
     {
       "title": "BMW Box",
       "image": "images/cars/bmw-box.png",
       "brand": "images/car-brands/bmw.png",
-      "price": "Ksh4000/day"
+      "price": "Ksh4000"
     },
     {
       "title": "BMW 320",
       "image": "images/cars/bmw320.png",
       "brand": "images/car-brands/bmw.png",
-      "price": "Ksh3500/day"
+      "price": "Ksh3500"
     },
     {
       "title": "Golf6 Box",
       "image": "images/cars/golf6-box.png",
       "brand": "images/car-brands/volkswagen.png",
-      "price": "Ksh1500/day"
+      "price": "Ksh1500"
     },
     {
       "title": "Golf6",
       "image": "images/cars/golf6.png",
       "brand": "images/car-brands/volkswagen.png",
-      "price": "Ksh1700/day"
+      "price": "Ksh1700"
     },
     {
       "title": "Passat",
       "image": "images/cars/passat-box.png",
       "brand": "images/car-brands/volkswagen.png",
-      "price": "Ksh1000/day"
+      "price": "Ksh1000"
     },
     {
       "title": "Passat CC",
       "image": "images/cars/passatcc.png",
       "brand": "images/car-brands/volkswagen.png",
-      "price": "Ksh1200/day"
+      "price": "Ksh1200"
     },
   ];
   @override

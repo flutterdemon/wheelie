@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_zoom_drawer/config.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wheelie/Screens/homeScreen.dart';
+
 import 'package:wheelie/Screens/splashscreen.dart';
-import 'package:wheelie/Widgets/sideDrawer.dart';
 
 late SharedPreferences prefs;
 
@@ -21,7 +19,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  bool newUser = true;
 
   @override
   Widget build(BuildContext context) {

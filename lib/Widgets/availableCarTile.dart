@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wheelie/Screens/carDetailScreen.dart';
 import 'package:wheelie/Widgets/sideDrawer.dart';
 
 class AvailableCarTile extends StatelessWidget {
@@ -32,12 +33,15 @@ class AvailableCarTile extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12.0),
                     bottomLeft: Radius.circular(12.0)),
-                child: FractionallySizedBox(
-                  widthFactor: 1,
-                  heightFactor: 1,
-                  child: Image.asset(
-                    imageUrl,
-                    fit: BoxFit.contain,
+                child: Hero(
+                  tag: imageUrl,
+                  child: FractionallySizedBox(
+                    widthFactor: 1,
+                    heightFactor: 1,
+                    child: Image.asset(
+                      imageUrl,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -61,7 +65,14 @@ class AvailableCarTile extends StatelessWidget {
                         children: [
                           Spacer(),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: (() {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) => CarDetailScreen(
+                                      imagePath: imageUrl,
+                                      name: title,
+                                      logoPath: brandUrl,
+                                      price: price))));
+                            }),
                             child: Container(
                               width: 120,
                               height: 40,
