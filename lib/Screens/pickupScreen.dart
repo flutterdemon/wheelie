@@ -16,8 +16,8 @@ class PickUpScreen extends StatefulWidget {
 }
 
 class _PickUpScreenState extends State<PickUpScreen> {
-  TextEditingController _pickUpController = TextEditingController();
-  TextEditingController _dropOfController = TextEditingController();
+  late TextEditingController _pickUpController;
+  late TextEditingController _dropOfController;
 
   List<dynamic> _cities = [];
   String? _selectedCity;
@@ -28,6 +28,15 @@ class _PickUpScreenState extends State<PickUpScreen> {
   void initState() {
     super.initState();
     loadCityData();
+    _pickUpController = TextEditingController();
+    _dropOfController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _pickUpController.dispose();
+    _dropOfController.dispose();
+    super.dispose();
   }
 
   Future<void> loadCityData() async {
@@ -230,7 +239,7 @@ class _DatePickFieldState extends State<DatePickField> {
                   setState(() {
                     String formattedDate = DateFormat('EEEE, MMM d, yyyy')
                         .format(_pickUpTime as DateTime);
-                    widget.dateController.text = formattedDate.toString();
+                    widget.dateController.text = formattedDate;
                   });
                 }
               },
