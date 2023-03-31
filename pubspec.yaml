@@ -40,6 +40,8 @@ dependencies:
   intl: ^0.17.0
   shared_preferences: ^2.0.18
   flutter_zoom_drawer: ^3.0.4+1
+  mpesa_flutter_plugin: ^1.6.1
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,7 @@ flutter:
     - images/car-brands/
     - google-fonts/
     - assets/
+    - .env
 
   # To add assets to your application, add an assets section, like this:
   # assets:

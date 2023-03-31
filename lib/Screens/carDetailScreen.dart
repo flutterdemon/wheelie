@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wheelie/main.dart';
+import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
 class CarDetailScreen extends StatefulWidget {
   const CarDetailScreen(
@@ -32,6 +33,31 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
     _amountController.dispose();
     _phoneNoController.dispose();
     super.dispose();
+  }
+
+  Future<dynamic> lipaNaMpesa(
+      {required double amount, required String phoneNo}) async {
+    dynamic transactionInitialization;
+
+    try {
+      transactionInitialization = await MpesaFlutterPlugin.initializeMpesaSTKPush(
+          businessShortCode: "174379",
+          transactionType: TransactionType.CustomerPayBillOnline,
+          amount: amount,
+          partyA: phoneNo,
+          partyB: "174379",
+          callBackURL: Uri.parse('https://sandbox.safaricom.co.ke/'),
+          accountReference: "Wheelie Bookings LTD",
+          phoneNumber: phoneNo,
+          baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
+          passKey:
+              'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+          transactionDesc: "Test");
+      print("Results: " + transactionInitialization.toString());
+      return transactionInitialization;
+    } catch (e) {
+      print("Caught MPESA Excepion: " + e.toString());
+    }
   }
 
   @override
@@ -403,6 +429,14 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
                                               onPressed: () {
                                                 if (_formKey.currentState!
                                                     .validate()) {
+                                                  lipaNaMpesa(
+                                                      amount: double.parse(
+                                                          _amountController
+                                                              .text),
+                                                      phoneNo:
+                                                          _phoneNoController
+                                                              .text);
+
                                                   print("Paying now ...");
                                                 }
                                               },
