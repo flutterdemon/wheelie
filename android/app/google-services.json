@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "51159477350",
+    "project_id": "wheelie-721c4",
+    "storage_bucket": "wheelie-721c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51159477350:android:7944c9f0dff4849b0111a7",
+        "android_client_info": {
+          "package_name": "com.example.wheelie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51159477350-f910ieh62kco5fhkdiesjaoletqsq01c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZoq7rxOnL4JbgfGbDeDJ9FrPUYrvfqgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51159477350-f910ieh62kco5fhkdiesjaoletqsq01c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

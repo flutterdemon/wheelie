@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -42,10 +42,22 @@ dependencies:
   flutter_zoom_drawer: ^3.0.4+1
   mpesa_flutter_plugin: ^1.6.1
   flutter_dotenv: ^5.0.2
+  firebase_core: ^2.9.0
+  cloud_firestore: ^4.5.0
+  email_validator: ^2.1.17
+  firebase_auth: ^4.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.12.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/wheelie.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "images/wheelie_foreground.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
