@@ -9,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 late SharedPreferences prefs;
-
+final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
   String consumerKey = dotenv.get('MPESA_CONSUMER_KEY');
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Wheelie',
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Color(0xFF00c4cc),
