@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wheelie/Screens/forgotPasswordScreen.dart';
 import 'package:wheelie/main.dart';
-import './editProfileScreen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key, required this.toggleView}) : super(key: key);
@@ -45,7 +45,11 @@ class _SignInScreenState extends State<SignInScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message!),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
     } finally {
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
@@ -96,6 +100,29 @@ class _SignInScreenState extends State<SignInScreen> {
               },
             ),
             SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => ForgotPasswordScreen()));
+                    },
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
               height: 20,
             ),
             Padding(
@@ -110,7 +137,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      print('Processing Data');
+                      FocusScope.of(context).unfocus();
+                      TextEditingController().clear();
                       signIn();
                     }
                   },

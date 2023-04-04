@@ -56,7 +56,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message!),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
     } finally {
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
