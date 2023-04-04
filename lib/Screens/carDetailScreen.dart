@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wheelie/Screens/profileScreen.dart';
 import 'package:wheelie/main.dart';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
@@ -21,10 +25,24 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
   late TextEditingController _amountController;
   late TextEditingController _phoneNoController;
   final _formKey = GlobalKey<FormState>();
+  bool _isEmailVerified = false;
+  late Timer _timer;
+
   @override
   void initState() {
     _amountController = TextEditingController();
     _phoneNoController = TextEditingController();
+
+    if (FirebaseAuth.instance.currentUser?.uid == null) {
+      _isEmailVerified = false;
+    } else {
+      _isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    }
+
+    if (!_isEmailVerified) {
+      _timer =
+          Timer.periodic(Duration(seconds: 5), (_) => checkEmailVerified());
+    }
     super.initState();
   }
 
@@ -32,6 +50,7 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
   void dispose() {
     _amountController.dispose();
     _phoneNoController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -57,6 +76,45 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
       return transactionInitialization;
     } catch (e) {
       print("Caught MPESA Excepion: " + e.toString());
+    }
+  }
+
+  Future checkEmailVerified() async {
+    await FirebaseAuth.instance.currentUser!.reload();
+    setState(() {
+      _isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
+    if (_isEmailVerified) {
+      _timer.cancel();
+    }
+  }
+
+  Future sendVerificationEmail() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(),
+            ));
+    try {
+      final user = await FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "Verification email sent successfully",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+        duration: Duration(seconds: 3),
+      ));
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message!),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
+    } finally {
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
   }
 
@@ -426,16 +484,87 @@ class _CarDetailScreenState extends State<CarDetailScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15.0))),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 if (_formKey.currentState!
                                                     .validate()) {
-                                                  lipaNaMpesa(
-                                                      amount: double.parse(
-                                                          _amountController
-                                                              .text),
-                                                      phoneNo:
-                                                          _phoneNoController
-                                                              .text);
+                                                  if (await FirebaseAuth
+                                                          .instance
+                                                          .currentUser
+                                                          ?.uid !=
+                                                      null) {
+                                                    if (!_isEmailVerified) {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                                dialogContext) =>
+                                                            AlertDialog(
+                                                          title: Text(
+                                                              "You must verify email"),
+                                                          content: Text(
+                                                              "Sorry! No payment shall be prompted unless you verify your in first."),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.of(
+                                                                            dialogContext)
+                                                                        .pop(),
+                                                                child: Text(
+                                                                    "Cancel")),
+                                                            TextButton(
+                                                                onPressed:
+                                                                    sendVerificationEmail,
+                                                                child: Text(
+                                                                    "Verify Email"))
+                                                          ],
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      lipaNaMpesa(
+                                                          amount: double.parse(
+                                                              _amountController
+                                                                  .text),
+                                                          phoneNo:
+                                                              _phoneNoController
+                                                                  .text);
+                                                    }
+                                                  } else {
+                                                    Navigator.of(context).pop();
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              dialogContext) =>
+                                                          AlertDialog(
+                                                        title: Text(
+                                                            "You must first sign in"),
+                                                        content: Text(
+                                                            "Sorry! No payment shall be prompted unless you are logged in first."),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.of(
+                                                                          dialogContext)
+                                                                      .pop(),
+                                                              child: Text(
+                                                                  "Cancel")),
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        dialogContext)
+                                                                    .pushReplacement(
+                                                                        MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ProfileScreen(),
+                                                                ));
+                                                              },
+                                                              child: Text(
+                                                                  "Sign in"))
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }
 
                                                   print("Paying now ...");
                                                 }
