@@ -52,9 +52,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: CircularProgressIndicator(),
             ));
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim());
+
+      await userCredential.user!.sendEmailVerification();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Please check your inbox for verificarion email"),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 6)));
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.message!),
