@@ -9,6 +9,7 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
+  bool isDarkMode = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,12 +50,12 @@ class _SideDrawerState extends State<SideDrawer> {
               ),
             ),
             SideMenuTile(
-                title: "Home", icon: Icons.home_outlined, onPress: () {}),
+                title: "Home",
+                icon: Icons.home_outlined,
+                onPress: () {
+                  ZoomDrawer.of(context)!.close();
+                }),
             SideMenuTile(title: "Search", icon: Icons.search, onPress: () {}),
-            SideMenuTile(
-                title: "Favorites",
-                icon: Icons.favorite_outline,
-                onPress: () {}),
             SideMenuTile(
                 title: "Account",
                 icon: Icons.account_circle_outlined,

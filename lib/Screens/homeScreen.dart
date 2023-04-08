@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:wheelie/Widgets/availableCarTile.dart';
-import 'package:wheelie/Widgets/sideDrawer.dart';
 import 'package:wheelie/main.dart';
 import './favoritesScreen.dart';
 import './notificationScreen.dart';
@@ -17,12 +17,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _listViewSelectedIndex = 0;
   int _selectedPageIndex = 0;
-  List<Widget> _pages = [
-    Container(),
-    FavoritesScreen(),
-    NotificationScreen(),
-    ProfileScreen()
-  ];
+  final _zoomDrawerController = ZoomDrawerController();
+
+  List<Widget> _pages = [Container(), NotificationScreen(), ProfileScreen()];
 
   List<String> _carCategories = [
     "All",
@@ -127,213 +124,206 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ZoomDrawer(
-      menuScreen: SideDrawer(),
-      mainScreen: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: _selectedPageIndex == 0
-            ? AppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                leading: GestureDetector(
-                  onTap: () => ZoomDrawer.of(context)!.open(),
-                  child: Container(
-                    child: FractionallySizedBox(
-                      widthFactor: 0.5,
-                      heightFactor: 0.5,
-                      child: Image.asset(
-                        'images/menus/menu4.png',
-                        height: 20,
-                        width: 20,
-                        fit: BoxFit.cover,
-                      ),
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: _selectedPageIndex == 0
+          ? AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: GestureDetector(
+                onTap: () {
+                  ZoomDrawer.of(context)!.open();
+                },
+                child: Container(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.5,
+                    heightFactor: 0.5,
+                    child: Image.asset(
+                      'images/menus/menu4.png',
+                      height: 20,
+                      width: 20,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                title:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.location_pin, size: 15, color: Color(0xFF141E61)),
-                  SizedBox(
-                    width: 5.0,
+              ),
+              title:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(Icons.location_pin, size: 15, color: Color(0xFF141E61)),
+                SizedBox(
+                  width: 5.0,
+                ),
+                Text(
+                  prefs.getString('location').toString() + ",Kenya",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold),
+                )
+              ]),
+              centerTitle: true,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: CircleAvatar(
+                    radius: 15,
+                    backgroundImage: AssetImage('images/add-user.png'),
                   ),
-                  Text(
-                    prefs.getString('location').toString() + ",Kenya",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold),
-                  )
-                ]),
-                centerTitle: true,
-                actions: [
+                ),
+              ],
+            )
+          : null,
+      body: _selectedPageIndex == 0
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  //Find the ideal car for you
                   Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundImage: AssetImage('images/add-user.png'),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      'Find the ideal car for you',
+                      style: TextStyle(
+                          fontSize: 45,
+                          fontFamily: 'NunitoSans Bold',
+                          color: Colors.grey[700]),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  //Search Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          prefixIcon: Icon(Icons.search),
+                          hintText: "Find any car...",
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade300)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade300))),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+
+                  //Categories
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      height: 50,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: ((context, index) => GestureDetector(
+                              onTap: (() {
+                                setState(() {
+                                  _listViewSelectedIndex = index;
+                                });
+                              }),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Text(
+                                      _carCategories[index],
+                                      style: TextStyle(
+                                          color: _listViewSelectedIndex == index
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.grey[700],
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  if (_listViewSelectedIndex == index)
+                                    Container(
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0)),
+                                    )
+                                ],
+                              ),
+                            )),
+                        itemCount: _carCategories.length,
+                      ),
+                    ),
+                  ),
+                  //Horizontal Listview of cars
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, bottom: 20.0),
+                    child: Row(children: [
+                      Text(
+                        "Available Near You",
+                        style: TextStyle(
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0),
+                      ),
+                      Spacer(),
+                      Text(
+                        "View All",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          decoration: TextDecoration.underline,
+                        ),
+                      )
+                    ]),
+                  ),
+                  //Vertical ListView of Reccomended Cars
+                  //List
+                  Container(
+                    height: 300,
+                    child: Expanded(
+                      child: ListView.builder(
+                          itemCount: _availableCars.length,
+                          itemBuilder: ((context, index) => AvailableCarTile(
+                              title: _availableCars[index]['title'],
+                              imageUrl: _availableCars[index]['image'],
+                              brandUrl: _availableCars[index]['brand'],
+                              price: _availableCars[index]['price']))),
                     ),
                   ),
                 ],
-              )
-            : null,
-        body: _selectedPageIndex == 0
-            ? SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    //Find the ideal car for you
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Find the ideal car for you',
-                        style: TextStyle(
-                            fontSize: 45,
-                            fontFamily: 'NunitoSans Bold',
-                            color: Colors.grey[700]),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    //Search Bar
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            prefixIcon: Icon(Icons.search),
-                            hintText: "Find any car...",
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade300)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade300))),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-
-                    //Categories
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        height: 50,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: ((context, index) => GestureDetector(
-                                onTap: (() {
-                                  setState(() {
-                                    _listViewSelectedIndex = index;
-                                  });
-                                }),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      child: Text(
-                                        _carCategories[index],
-                                        style: TextStyle(
-                                            color: _listViewSelectedIndex ==
-                                                    index
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.grey[700],
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    if (_listViewSelectedIndex == index)
-                                      Container(
-                                        width: 6,
-                                        height: 6,
-                                        decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0)),
-                                      )
-                                  ],
-                                ),
-                              )),
-                          itemCount: _carCategories.length,
-                        ),
-                      ),
-                    ),
-                    //Horizontal Listview of cars
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, bottom: 20.0),
-                      child: Row(children: [
-                        Text(
-                          "Available Near You",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25.0),
-                        ),
-                        Spacer(),
-                        Text(
-                          "View All",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            decoration: TextDecoration.underline,
-                          ),
-                        )
-                      ]),
-                    ),
-                    //Vertical ListView of Reccomended Cars
-                    //List
-                    Container(
-                      height: 300,
-                      child: Expanded(
-                        child: ListView.builder(
-                            itemCount: _availableCars.length,
-                            itemBuilder: ((context, index) => AvailableCarTile(
-                                title: _availableCars[index]['title'],
-                                imageUrl: _availableCars[index]['image'],
-                                brandUrl: _availableCars[index]['brand'],
-                                price: _availableCars[index]['price']))),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : _pages[_selectedPageIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Colors.grey[900],
-            currentIndex: _selectedPageIndex,
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Theme.of(context).primaryColor,
-            unselectedItemColor: Colors.grey[500],
-            onTap: _selectedPage,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: '',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle), label: ''),
-            ]),
-      ),
+            )
+          : _pages[_selectedPageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.grey[900],
+          currentIndex: _selectedPageIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.grey[500],
+          onTap: _selectedPage,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle), label: ''),
+          ]),
     );
   }
 }

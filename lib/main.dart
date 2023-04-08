@@ -4,12 +4,14 @@ import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wheelie/Screens/homeScreen.dart';
+import 'package:wheelie/Screens/mainHomeScreen.dart';
 import 'package:wheelie/Screens/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 late SharedPreferences prefs;
 final navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
   String consumerKey = dotenv.get('MPESA_CONSUMER_KEY');
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomeScreen();
+            return MainHomeScreen();
           } else {
             return SplashScreen();
           }
