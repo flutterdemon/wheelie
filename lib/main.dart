@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wheelie/Screens/homeScreen.dart';
@@ -8,6 +9,7 @@ import 'package:wheelie/Screens/mainHomeScreen.dart';
 import 'package:wheelie/Screens/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 
 late SharedPreferences prefs;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -33,28 +35,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Wheelie',
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Color(0xFF00c4cc),
-          fontFamily: "Lato",
-          textTheme: TextTheme(
-              headline5: TextStyle(
-                  color: Colors.black,
-                  fontSize: 36.0,
-                  fontFamily: "NunitoSans Bold"))),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return MainHomeScreen();
-          } else {
-            return SplashScreen();
-          }
-        },
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          title: 'Wheelie',
+          navigatorKey: navigatorKey,
+          themeMode: themeProvider.themeMode,
+          debugShowCheckedModeBanner: false,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return MainHomeScreen();
+              } else {
+                return SplashScreen();
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

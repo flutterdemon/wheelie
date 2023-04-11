@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:provider/provider.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 import 'package:wheelie/Widgets/availableCarTile.dart';
 import 'package:wheelie/main.dart';
-import './favoritesScreen.dart';
 import './notificationScreen.dart';
 import './profileScreen.dart';
 
@@ -124,12 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkModeOn = Provider.of<ThemeProvider>(context).isDarkMode;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: _selectedPageIndex == 0
           ? AppBar(
               elevation: 0,
-              backgroundColor: Colors.transparent,
               leading: GestureDetector(
                 onTap: () {
                   ZoomDrawer.of(context)!.open();
@@ -142,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'images/menus/menu4.png',
                       height: 20,
                       width: 20,
+                      color: isDarkModeOn ? Colors.white : null,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -149,16 +150,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.location_pin, size: 15, color: Color(0xFF141E61)),
+                Icon(Icons.location_pin,
+                    size: 15,
+                    color:
+                        isDarkModeOn ? Color(0xFF03506F) : Color(0xFF141E61)),
                 SizedBox(
                   width: 5.0,
                 ),
                 Text(
                   prefs.getString('location').toString() + ",Kenya",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                 )
               ]),
               centerTitle: true,
@@ -188,7 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                           fontSize: 45,
                           fontFamily: 'NunitoSans Bold',
-                          color: Colors.grey[700]),
+                          color: isDarkModeOn
+                              ? Colors.grey[200]
+                              : Colors.grey[700]),
                     ),
                   ),
                   SizedBox(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:provider/provider.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class _SideDrawerState extends State<SideDrawer> {
   bool isDarkMode = false;
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -49,6 +52,17 @@ class _SideDrawerState extends State<SideDrawer> {
                 style: TextStyle(color: Colors.white70),
               ),
             ),
+            SwitchListTile(
+                title: Text("Dark Mode",
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                value: themeProvider.isDarkMode,
+                onChanged: (value) {
+                  final provider =
+                      Provider.of<ThemeProvider>(context, listen: false);
+                  provider.toggleTheme(value);
+                }),
             SideMenuTile(
                 title: "Home",
                 icon: Icons.home_outlined,

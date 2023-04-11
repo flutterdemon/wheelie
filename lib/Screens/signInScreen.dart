@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:wheelie/Screens/forgotPasswordScreen.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 import 'package:wheelie/main.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -17,7 +19,6 @@ class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController _passwordController;
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     _emailController = TextEditingController();
@@ -57,6 +58,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkModeOn = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -64,7 +67,8 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/wheelie_light.png', height: 150),
+            Image.asset('images/wheelie_light.png',
+                color: isDarkModeOn ? Colors.white : null, height: 150),
             SizedBox(
               height: 20,
             ),

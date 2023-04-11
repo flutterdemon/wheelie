@@ -25,14 +25,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFBFCFD),
       appBar: AppBar(
-        backgroundColor: Color(0xFFFBFCFD),
         elevation: 0.0,
         title: Text(
           "Notification",
-          style:
-              TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [

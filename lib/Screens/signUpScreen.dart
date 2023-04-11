@@ -3,7 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 import 'package:wheelie/Screens/otpVerificationScreen.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 import 'package:wheelie/main.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -75,6 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkModeOn = Provider.of<ThemeProvider>(context).isDarkMode;
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -83,7 +86,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('images/wheelie_light.png', height: 150),
+              Image.asset('images/wheelie_light.png',
+                  color: isDarkModeOn ? Colors.white : null, height: 150),
               SizedBox(
                 height: 20,
               ),

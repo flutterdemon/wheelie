@@ -1,6 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wheelie/Utils/themeUtil.dart';
 import 'package:wheelie/main.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -57,10 +59,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkModeOn = Provider.of<ThemeProvider>(context).isDarkMode;
     return Scaffold(
-      backgroundColor: Color(0xFFFBFCFD),
       appBar: AppBar(
-        backgroundColor: Color(0xFFFBFCFD),
         elevation: 0,
         leading: IconButton(
             onPressed: () {
@@ -68,7 +69,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             },
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.black,
             )),
       ),
       body: Padding(
@@ -85,6 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     alignment: Alignment.center,
                     child: Image.asset(
                       'images/wheelie_light.png',
+                      color: isDarkModeOn ? Colors.white : null,
                       height: 300,
                     ),
                   ),
